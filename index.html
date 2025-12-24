@@ -1,0 +1,3797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云草链 - 云南虫草产业整合平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a6e3f;
+            --secondary-color: #d4af37;
+            --light-color: #f5f9f7;
+            --dark-color: #1a3c27;
+            --text-color: #333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: #fefefe;
+            position: relative;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 6px;
+            background-color: white;
+        }
+        
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .logo-subtext {
+            font-size: 12px;
+            color: var(--secondary-color);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            padding: 5px 0;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 10px 22px;
+            border-radius: var(--border-radius);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1f5a32;
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(42, 110, 63, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        /* 登录注册模态框 */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .auth-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.4s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .auth-tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .auth-content {
+            padding: 40px;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(42, 110, 63, 0.1);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+        }
+        
+        .auth-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .close-auth {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* 详情查看模态框 */
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1500;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .detail-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.4s ease;
+        }
+        
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-header h2 {
+            color: var(--dark-color);
+            margin: 0;
+        }
+        
+        .close-detail {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-detail:hover {
+            color: var(--primary-color);
+        }
+        
+        .detail-body {
+            padding: 30px;
+        }
+        
+        /* 产品详情样式 */
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .product-images {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 300px;
+            background-color: #f5f9f7;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: var(--primary-color);
+        }
+        
+        .image-thumbnails {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            background-color: #eee;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #999;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .thumbnail:hover, .thumbnail.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .product-info-detail h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .product-price-large {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .product-meta {
+            margin-bottom: 25px;
+        }
+        
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .meta-item:last-child {
+            border-bottom: none;
+        }
+        
+        .meta-label {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .meta-value {
+            color: #555;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        /* 企业详情样式 */
+        .company-detail {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+        
+        .company-logo-large {
+            height: 200px;
+            background-color: #f5f9f7;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .company-info-detail h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .company-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .company-tag-large {
+            background-color: rgba(42, 110, 63, 0.1);
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .company-description {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        
+        .company-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 溯源功能样式 */
+        .trace-result-detail {
+            margin-top: 40px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .trace-timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-top: 20px;
+        }
+        
+        .trace-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary-color);
+        }
+        
+        .timeline-time {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content {
+            color: #555;
+        }
+        
+        .trace-quality-report {
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .quality-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .quality-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* 英雄区域样式 */
+        .hero {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8)), url('https://images.unsplash.com/photo-1589923186741-b7d59d6b2c4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            line-height: 1.2;
+        }
+        
+        .hero-highlight {
+            color: var(--primary-color);
+            position: relative;
+        }
+        
+        .hero-highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(212, 175, 55, 0.3);
+            z-index: -1;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #555;
+        }
+        
+        /* 平台定位部分 */
+        .platform-positioning {
+            padding: 80px 0;
+            background-color: var(--light-color);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: var(--dark-color);
+        }
+        
+        .positioning-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .position-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .position-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .position-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .position-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        /* 平台功能部分 */
+        .platform-features {
+            padding: 80px 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .feature-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .feature-icon {
+            min-width: 60px;
+            height: 60px;
+            background-color: rgba(42, 110, 63, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .feature-text h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .feature-image {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .feature-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .feature-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* 合作伙伴部分 */
+        .partners {
+            padding: 80px 0;
+            background-color: var(--light-color);
+        }
+        
+        .partners-logos {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .partner-logo {
+            width: 150px;
+            height: 80px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .partner-logo:hover {
+            transform: translateY(-5px);
+            color: var(--secondary-color);
+        }
+        
+        /* 溯源展示部分 */
+        .traceability {
+            padding: 80px 0;
+        }
+        
+        .traceability-demo {
+            background: linear-gradient(to right, #f5f9f7, #ffffff);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+            margin-top: 40px;
+        }
+        
+        .trace-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .trace-steps::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background-color: var(--primary-color);
+            z-index: 1;
+        }
+        
+        .trace-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            width: 20%;
+        }
+        
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary-color);
+            border: 3px solid var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .step-text {
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        /* 新增：产品溯源查询模块 */
+        .traceability-query {
+            background-color: var(--light-color);
+            padding: 60px 0;
+            margin: 40px 0;
+        }
+        
+        .query-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .query-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .query-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        .query-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .query-result {
+            width: 100%;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .result-value {
+            color: #555;
+        }
+        
+        /* 新增：合作企业展示模块 */
+        .cooperation-showcase {
+            padding: 80px 0;
+        }
+        
+        .company-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .company-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .company-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .company-logo {
+            height: 120px;
+            background-color: #f5f9f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .company-info {
+            padding: 25px;
+        }
+        
+        .company-info h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .company-tag {
+            display: inline-block;
+            background-color: rgba(42, 110, 63, 0.1);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        /* 新增：虫草产品展示 */
+        .products-showcase {
+            padding: 80px 0;
+            background-color: var(--light-color);
+        }
+        
+        .product-tabs {
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 40px;
+        }
+        
+        .tab-btn {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .tab-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-color);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-img {
+            height: 200px;
+            background-color: #f5f9f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 60px;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-info h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        
+        .product-trace {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        /* 新增：虫草文化模块 */
+        .culture-section {
+            padding: 80px 0;
+            background-color: var(--light-color);
+        }
+        
+        .culture-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .culture-tab {
+            padding: 12px 24px;
+            background-color: white;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .culture-tab:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .culture-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .culture-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .culture-content.active {
+            display: block;
+        }
+        
+        .culture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .culture-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .culture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .culture-img {
+            height: 200px;
+            background-color: #f5f9f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 60px;
+        }
+        
+        .culture-info {
+            padding: 25px;
+        }
+        
+        .culture-info h3 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            font-size: 22px;
+        }
+        
+        .culture-info p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        /* 新增：关于我们模块 */
+        .about-section {
+            padding: 80px 0;
+        }
+        
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .about-header h2 {
+            font-size: 36px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+        
+        .about-header p {
+            font-size: 18px;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .about-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .about-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+        }
+        
+        .about-tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .about-tab:hover {
+            color: var(--primary-color);
+        }
+        
+        .about-tab.active {
+            color: var(--primary-color);
+        }
+        
+        .about-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .about-panel {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .about-panel.active {
+            display: block;
+        }
+        
+        .mission-values {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .value-card {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(42, 110, 63, 0.05);
+        }
+        
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(42, 110, 63, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #eee;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--primary-color);
+        }
+        
+        .contact-info {
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+        
+        /* 新增：在线咨询模块 */
+        .consultation-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+        
+        .consult-btn {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(42, 110, 63, 0.3);
+            transition: var(--transition);
+        }
+        
+        .consult-btn:hover {
+            transform: scale(1.1);
+            background-color: #1f5a32;
+        }
+        
+        .consult-modal {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .consult-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .consult-option:hover {
+            background-color: #f5f9f7;
+            border-color: var(--primary-color);
+        }
+        
+        .option-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(42, 110, 63, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .positioning-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero h1 {
+                font-size: 38px;
+            }
+            
+            .company-grid, .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .consult-modal {
+                width: 300px;
+                right: -50px;
+            }
+            
+            .product-detail, .company-detail {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .company-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .trace-timeline {
+                padding-left: 25px;
+            }
+            
+            .timeline-item::before {
+                left: -30px;
+            }
+            
+            .culture-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mission-values {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links, .auth-buttons {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .positioning-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .trace-steps {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .trace-steps::before {
+                display: none;
+            }
+            
+            .trace-step {
+                width: 100%;
+                flex-direction: row;
+                gap: 15px;
+            }
+            
+            .step-icon {
+                margin-bottom: 0;
+            }
+            
+            .step-text {
+                text-align: left;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .company-grid, .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .consult-modal {
+                width: 280px;
+                right: -80px;
+            }
+            
+            .auth-container {
+                margin: 20px;
+            }
+            
+            .auth-content {
+                padding: 30px 20px;
+            }
+            
+            .company-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .trace-result-detail {
+                padding: 20px;
+            }
+            
+            .trace-timeline {
+                padding-left: 20px;
+            }
+            
+            .timeline-item::before {
+                left: -28px;
+            }
+            
+            .mission-values {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .culture-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .about-tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <!-- 使用本地图片 "产量.jpg" -->
+                        <img src="logo.png" alt="云草链Logo">
+                    </div>
+                    <div>
+                        <div class="logo-text">云草链</div>
+                        <div class="logo-subtext">YUNCAO CHAIN</div>
+                    </div>
+                </div>
+                
+                <nav class="nav-links">
+                    <a href="#" class="active">首页</a>
+                    <a href="#products">产品中心</a>
+                    <a href="#traceability">溯源查询</a>
+                    <a href="#cooperation">合作企业</a>
+                    <a href="#culture">虫草文化</a>
+                    <a href="#about">关于我们</a>
+                </nav>
+                
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">
+                        <i class="fas fa-user"></i> 登录
+                    </button>
+                    <button class="btn btn-primary" id="registerBtn">
+                        <i class="fas fa-handshake"></i> 加入平台
+                    </button>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 登录注册模态框 -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="loginTabBtn">登录</button>
+                <button class="auth-tab" id="registerTabBtn">注册</button>
+            </div>
+            
+            <div class="auth-content">
+                <!-- 登录表单 -->
+                <form class="auth-form active" id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">邮箱地址</label>
+                        <input type="email" id="loginEmail" class="form-control" placeholder="请输入邮箱地址" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">密码</label>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="请输入密码" required>
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <input type="checkbox" id="rememberMe">
+                            <label for="rememberMe" style="display: inline; margin-left: 5px;">记住我</label>
+                        </div>
+                        <a href="#" style="color: var(--primary-color); text-decoration: none;">忘记密码？</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px;">
+                        登录
+                    </button>
+                    
+                    <div class="auth-footer">
+                        <p>还没有账号？ <a href="#" id="switchToRegister">立即注册</a></p>
+                    </div>
+                </form>
+                
+                <!-- 注册表单 -->
+                <form class="auth-form" id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">姓名</label>
+                        <input type="text" id="registerName" class="form-control" placeholder="请输入真实姓名" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerEmail">邮箱地址</label>
+                        <input type="email" id="registerEmail" class="form-control" placeholder="请输入邮箱地址" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPhone">手机号码</label>
+                        <input type="tel" id="registerPhone" class="form-control" placeholder="请输入手机号码" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerUserType">用户类型</label>
+                        <select id="registerUserType" class="form-control" required>
+                            <option value="">请选择用户类型</option>
+                            <option value="consumer">消费者/采购商</option>
+                            <option value="producer">生产者/供应商</option>
+                            <option value="enterprise">企业/合作社</option>
+                            <option value="researcher">研究人员</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPassword">密码</label>
+                        <input type="password" id="registerPassword" class="form-control" placeholder="请输入密码（至少8位）" required minlength="8">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">确认密码</label>
+                        <input type="password" id="registerConfirmPassword" class="form-control" placeholder="请再次输入密码" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <label for="agreeTerms" style="display: inline; margin-left: 5px;">
+                            我已阅读并同意 <a href="#" style="color: var(--primary-color);">《云草链平台服务协议》</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px;">
+                        注册
+                    </button>
+                    
+                    <div class="auth-footer">
+                        <p>已有账号？ <a href="#" id="switchToLogin">立即登录</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <button class="close-auth" id="closeAuthModal">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- 产品详情模态框 -->
+    <div class="detail-modal" id="productDetailModal">
+        <div class="detail-container">
+            <div class="detail-header">
+                <h2 id="productDetailTitle">产品详情</h2>
+                <button class="close-detail" id="closeProductDetail">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="detail-body">
+                <div class="product-detail">
+                    <div class="product-images">
+                        <div class="main-image" id="productMainImage">
+                            <i class="fas fa-capsules"></i>
+                        </div>
+                        <div class="image-thumbnails">
+                            <div class="thumbnail active" data-image="capsules">
+                                <i class="fas fa-capsules"></i>
+                            </div>
+                            <div class="thumbnail" data-image="mountain">
+                                <i class="fas fa-mountain"></i>
+                            </div>
+                            <div class="thumbnail" data-image="leaf">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <div class="thumbnail" data-image="vial">
+                                <i class="fas fa-vial"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-info-detail">
+                        <h1 id="productDetailName">迪庆特级冬虫夏草</h1>
+                        <div class="product-price-large" id="productDetailPrice">¥ 12,800 / 50g</div>
+                        
+                        <div class="product-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">产品等级</span>
+                                <span class="meta-value" id="productGrade">特级</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">产地</span>
+                                <span class="meta-value" id="productOrigin">云南迪庆香格里拉</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">采挖时间</span>
+                                <span class="meta-value" id="productHarvestTime">2023年10月</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">加工企业</span>
+                                <span class="meta-value" id="productCompany">云百草生物科技有限公司</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">溯源码</span>
+                                <span class="meta-value" id="productTraceCode">YC20231015DQ001</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">库存状态</span>
+                                <span class="meta-value" id="productStock">充足</span>
+                            </div>
+                        </div>
+                        
+                        <p id="productDescription" style="color: #555; line-height: 1.8; margin-bottom: 25px;">
+                            产自云南迪庆香格里拉高原地区，海拔3500米以上，纯天然环境生长。虫体饱满完整，色泽金黄，草枝粗壮，有效成分含量高。采用传统采挖方法结合现代加工技术，确保品质纯正。
+                        </p>
+                        
+                        <div class="product-actions">
+                            <button class="btn btn-primary" id="addToCartBtn">
+                                <i class="fas fa-shopping-cart"></i> 加入采购车
+                            </button>
+                            <button class="btn btn-outline" id="contactSupplierBtn">
+                                <i class="fas fa-comment-dots"></i> 联系供应商
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 企业详情模态框 -->
+    <div class="detail-modal" id="companyDetailModal">
+        <div class="detail-container">
+            <div class="detail-header">
+                <h2 id="companyDetailTitle">企业详情</h2>
+                <button class="close-detail" id="closeCompanyDetail">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="detail-body">
+                <div class="company-detail">
+                    <div class="company-logo-large" id="companyDetailLogo">
+                        云百草
+                    </div>
+                    
+                    <div class="company-info-detail">
+                        <h1 id="companyDetailName">云百草生物科技有限公司</h1>
+                        
+                        <div class="company-tags" id="companyDetailTags">
+                            <span class="company-tag-large">加工企业</span>
+                            <span class="company-tag-large">GMP认证</span>
+                            <span class="company-tag-large">高新技术企业</span>
+                        </div>
+                        
+                        <div class="company-description" id="companyDetailDescription">
+                            云百草生物科技有限公司成立于2010年，是云南省重点扶持的虫草精深加工企业。公司拥有现代化生产车间和研发中心，专注于冬虫夏草等云南特色药材的研发、生产和销售。公司通过GMP认证，产品质量管理体系完善，与迪庆、怒江等地多个合作社建立长期合作关系，年加工虫草能力达5吨。
+                        </div>
+                        
+                        <div class="company-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="companyYear">13年</div>
+                                <div class="stat-label">成立时间</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="companyEmployees">150+</div>
+                                <div class="stat-label">员工人数</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="companyCapacity">5吨</div>
+                                <div class="stat-label">年加工能力</div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="margin-bottom: 15px; color: var(--dark-color);">合作信息</h3>
+                        <div class="product-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">合作农户</span>
+                                <span class="meta-value" id="companyFarmers">200+户</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">主要产品</span>
+                                <span class="meta-value" id="companyProducts">冬虫夏草、虫草粉、虫草酒</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">认证资质</span>
+                                <span class="meta-value" id="companyCertifications">GMP、ISO9001、有机认证</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">加入平台时间</span>
+                                <span class="meta-value" id="companyJoinDate">2022年5月</span>
+                            </div>
+                        </div>
+                        
+                        <div class="product-actions" style="margin-top: 30px;">
+                            <button class="btn btn-primary" id="contactCompanyBtn">
+                                <i class="fas fa-envelope"></i> 联系企业
+                            </button>
+                            <button class="btn btn-outline" id="viewProductsBtn">
+                                <i class="fas fa-box-open"></i> 查看产品
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>连接云南虫草产业的<span class="hero-highlight">智慧桥梁</span></h1>
+            <p>整合云南虫草产业上中下游资源，贯通产地、加工与消费，推动虫草产业标准化、透明化、可溯源，助力乡村振兴与云药文化传播。</p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" style="padding: 15px 30px; font-size: 18px;" id="startTraceBtn">
+                    <i class="fas fa-search"></i> 立即溯源查询
+                </button>
+                <button class="btn btn-outline" style="padding: 15px 30px; font-size: 18px;" id="watchIntroBtn">
+                    <i class="fas fa-play-circle"></i> 观看平台介绍
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 平台定位 -->
+    <section class="platform-positioning">
+        <div class="container">
+            <h2 class="section-title">平台定位：产业连接的"桥梁"</h2>
+            <div class="positioning-cards">
+                <div class="position-card">
+                    <div class="position-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3>上游：连接产地</h3>
+                    <p>对接云南迪庆、丽江、怒江等核心产区合作社及农户，制定标准化采挖与初加工方案，从源头保障品质。</p>
+                </div>
+                
+                <div class="position-card">
+                    <div class="position-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <h3>中游：整合加工</h3>
+                    <p>链接云百草、西草、植秀等小微企业与地方加工坊，推行标准化加工，统一定价防止过度溢价。</p>
+                </div>
+                
+                <div class="position-card">
+                    <div class="position-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>下游：打通渠道</h3>
+                    <p>贯通电商、药店、文旅等多元销售渠道，为消费者提供质优价廉、可溯源的云南虫草产品。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品溯源查询 -->
+    <section class="traceability-query" id="traceability">
+        <div class="container">
+            <h2 class="section-title">产品溯源查询</h2>
+            <div class="query-container">
+                <div class="query-box">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">验证产品真伪，追溯虫草来源</h3>
+                        <p>输入产品包装上的溯源码，查看虫草从采挖到配送的全流程信息</p>
+                    </div>
+                    
+                    <input type="text" class="query-input" id="traceCode" placeholder="请输入15位产品溯源码（例如：YC20231015DQMZ001）" maxlength="15">
+                    
+                    <button class="btn btn-primary" id="queryBtn" style="width: 200px; padding: 15px;">
+                        <i class="fas fa-search"></i> 查询溯源信息
+                    </button>
+                    
+                    <div class="query-result" id="queryResult">
+                        <h3 style="color: var(--primary-color); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check-circle"></i> 溯源查询结果
+                        </h3>
+                        
+                        <div class="result-item">
+                            <span class="result-label">产品名称：</span>
+                            <span class="result-value" id="productName">云南迪庆特级冬虫夏草</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">溯源码：</span>
+                            <span class="result-value" id="productCode">YC20231015DQ001</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">采挖地点：</span>
+                            <span class="result-value" id="harvestLocation">云南省迪庆藏族自治州香格里拉市</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">采挖时间：</span>
+                            <span class="result-value" id="harvestTime">2023年10月15日</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">加工企业：</span>
+                            <span class="result-value" id="processCompany">云百草生物科技有限公司</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">加工时间：</span>
+                            <span class="result-value" id="processTime">2023年10月20日</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">质量检测：</span>
+                            <span class="result-value" id="qualityCheck">合格 (检测报告编号: QB20231020001)</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">物流信息：</span>
+                            <span class="result-value" id="logisticsInfo">2023年10月25日发出，顺丰速运 SF123456789</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 虫草产品展示 -->
+    <section class="products-showcase" id="products">
+        <div class="container">
+            <h2 class="section-title">虫草产品精选</h2>
+            
+            <div class="product-tabs">
+                <button class="tab-btn active" data-category="all">全部产品</button>
+                <button class="tab-btn" data-category="premium">特级虫草</button>
+                <button class="tab-btn" data-category="standard">标准虫草</button>
+                <button class="tab-btn" data-category="derivative">衍生制品</button>
+            </div>
+            
+            <div class="product-grid">
+                <!-- 产品1 -->
+                <div class="product-card" data-category="premium">
+                    <div class="product-img">
+                        <i class="fas fa-capsules"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>迪庆特级冬虫夏草</h3>
+                        <div class="product-price">¥ 12,800 / 50g</div>
+                        <div class="product-trace">
+                            <i class="fas fa-qrcode"></i>
+                            <span>溯源码: YC20231015DQ001</span>
+                        </div>
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">产自迪庆香格里拉高原，虫体饱满，草枝完整，精选特级品。</p>
+                        <button class="btn btn-outline view-product-detail" data-product-id="1" style="width: 100%;">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 产品2 -->
+                <div class="product-card" data-category="standard">
+                    <div class="product-img">
+                        <i class="fas fa-capsules"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>丽江一级虫草</h3>
+                        <div class="product-price">¥ 8,600 / 50g</div>
+                        <div class="product-trace">
+                            <i class="fas fa-qrcode"></i>
+                            <span>溯源码: YC20231020LJ002</span>
+                        </div>
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">丽江玉龙雪山产区，品质优良，性价比高，适合日常养生。</p>
+                        <button class="btn btn-outline view-product-detail" data-product-id="2" style="width: 100%;">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 产品3 -->
+                <div class="product-card" data-category="derivative">
+                    <div class="product-img">
+                        <i class="fas fa-wine-bottle"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>虫草养生酒</h3>
+                        <div class="product-price">¥ 680 / 瓶</div>
+                        <div class="product-trace">
+                            <i class="fas fa-qrcode"></i>
+                            <span>溯源码: YC20231025CC001</span>
+                        </div>
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">云百草特制，采用优质虫草与纯粮酒浸泡，滋补养生。</p>
+                        <button class="btn btn-outline view-product-detail" data-product-id="3" style="width: 100%;">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 产品4 -->
+                <div class="product-card" data-category="derivative">
+                    <div class="product-img">
+                        <i class="fas fa-mortar-pestle"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>虫草精华粉</h3>
+                        <div class="product-price">¥ 1,280 / 盒</div>
+                        <div class="product-trace">
+                            <i class="fas fa-qrcode"></i>
+                            <span>溯源码: YC20231028FM001</span>
+                        </div>
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">超微粉碎技术，更易吸收，适合冲泡服用。</p>
+                        <button class="btn btn-outline view-product-detail" data-product-id="4" style="width: 100%;">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 平台功能 -->
+    <section class="platform-features">
+        <div class="container">
+            <h2 class="section-title">核心功能与服务</h2>
+            <div class="features-grid">
+                <div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>全链溯源系统</h3>
+                            <p>每一件虫草产品都有唯一溯源码，扫码即可查看从采挖、加工到运输的全过程信息。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>标准化生产监督</h3>
+                            <p>为农户与加工企业提供标准化操作指南，并通过平台监督执行，确保产品品质一致。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>直接交易平台</h3>
+                            <p>消除中间环节，让消费者直接对接优质产地与加工企业，享受产地直供价格。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>虫草文化传播</h3>
+                            <p>建立云药文化专栏，传播虫草知识、鉴别方法与养生文化，提升消费者认知。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="虫草产品展示">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 合作企业展示 -->
+    <section class="cooperation-showcase" id="cooperation">
+        <div class="container">
+            <h2 class="section-title">合作企业展示</h2>
+            
+            <div class="company-filter">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="processing">加工企业</button>
+                <button class="filter-btn" data-filter="sales">销售渠道</button>
+                <button class="filter-btn" data-filter="origin">产地合作社</button>
+            </div>
+            
+            <div class="company-grid">
+                <!-- 企业1 -->
+                <div class="company-card" data-type="processing">
+                    <div class="company-logo" style="background-color: #e8f5e9;">云百草</div>
+                    <div class="company-info">
+                        <h3>云百草生物科技有限公司</h3>
+                        <div>
+                            <span class="company-tag">加工企业</span>
+                            <span class="company-tag">GMP认证</span>
+                        </div>
+                        <p style="color: #666; margin-top: 10px; font-size: 14px;">专注于虫草等云药研发与精深加工，拥有现代化生产线和研发中心。</p>
+                        <button class="btn btn-outline view-company-detail" data-company-id="1" style="width: 100%; margin-top: 15px;">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 企业2 -->
+                <div class="company-card" data-type="sales">
+                    <div class="company-logo" style="background-color: #f3e5f5;">滇草坊</div>
+                    <div class="company-info">
+                        <h3>滇草坊健康连锁</h3>
+                        <div>
+                            <span class="company-tag">销售渠道</span>
+                            <span class="company-tag">连锁药店</span>
+                        </div>
+                        <p style="color: #666; margin-top: 10px; font-size: 14px;">云南省内50+连锁门店，专注高品质中药材销售，消费者信赖品牌。</p>
+                        <button class="btn btn-outline view-company-detail" data-company-id="2" style="width: 100%; margin-top: 15px;">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 企业3 -->
+                <div class="company-card" data-type="origin">
+                    <div class="company-logo" style="background-color: #e3f2fd;">香格里拉合作社</div>
+                    <div class="company-info">
+                        <h3>香格里拉虫草合作社</h3>
+                        <div>
+                            <span class="company-tag">产地合作社</span>
+                            <span class="company-tag">迪庆产区</span>
+                        </div>
+                        <p style="color: #666; margin-top: 10px; font-size: 14px;">联合迪庆地区200+农户，实行统一采挖标准，保障虫草原材料品质。</p>
+                        <button class="btn btn-outline view-company-detail" data-company-id="3" style="width: 100%; margin-top: 15px;">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 企业4 -->
+                <div class="company-card" data-type="processing">
+                    <div class="company-logo" style="background-color: #fff3e0;">植秀堂</div>
+                    <div class="company-info">
+                        <h3>植秀堂药业有限公司</h3>
+                        <div>
+                            <span class="company-tag">加工企业</span>
+                            <span class="company-tag">文创产品</span>
+                        </div>
+                        <p style="color: #666; margin-top: 10px; font-size: 14px;">将虫草与传统中医药结合，开发系列养生保健品和文创产品。</p>
+                        <button class="btn btn-outline view-company-detail" data-company-id="4" style="width: 100%; margin-top: 15px;">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 虫草文化模块 -->
+    <section class="culture-section" id="culture">
+        <div class="container">
+            <h2 class="section-title">虫草文化与知识</h2>
+            
+            <div class="culture-tabs">
+                <button class="culture-tab active" data-culture="origin">
+                    <i class="fas fa-mountain"></i> 虫草起源
+                </button>
+                <button class="culture-tab" data-culture="value">
+                    <i class="fas fa-heart"></i> 药用价值
+                </button>
+                <button class="culture-tab" data-culture="identification">
+                    <i class="fas fa-search"></i> 鉴别方法
+                </button>
+                <button class="culture-tab" data-culture="usage">
+                    <i class="fas fa-mortar-pestle"></i> 食用方法
+                </button>
+                <button class="culture-tab" data-culture="preservation">
+                    <i class="fas fa-box"></i> 保存技巧
+                </button>
+            </div>
+            
+            <!-- 虫草起源内容 -->
+            <div class="culture-content active" id="originContent">
+                <div class="culture-grid">
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>高原精灵的奥秘</h3>
+                            <p>冬虫夏草是一种特殊的虫草真菌寄生在蝙蝠蛾幼虫体内形成的复合体。夏季，虫草真菌的孢子侵入幼虫体内，冬季幼虫钻入土中死亡，真菌吸收幼虫营养生长，夏季从虫体头部长出子座，形成"冬虫夏草"。</p>
+                            <p>云南迪庆、丽江、怒江等地海拔3000-5000米的高寒草甸是冬虫夏草的主要产区，独特的高原气候和生态环境造就了云南虫草的卓越品质。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>历史渊源</h3>
+                            <p>虫草的使用历史可以追溯到2000多年前的汉代，《神农本草经》中已有记载。唐代《药性论》将其列为上品药材。</p>
+                            <p>清代赵学敏在《本草纲目拾遗》中详细记载了虫草的功效："冬虫夏草，味甘性温，秘精益气，专补命门。"</p>
+                            <p>云南藏族、纳西族等少数民族很早就发现了虫草的药用价值，形成了独特的采挖和食用文化。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>生态意义</h3>
+                            <p>虫草的生长与高原生态系统的平衡息息相关。它不仅是珍贵的药材，也是高原生态系统中的重要环节。</p>
+                            <p>云草链平台倡导可持续采挖，保护虫草资源，维护高原生态平衡，确保虫草产业的可持续发展。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 药用价值内容 -->
+            <div class="culture-content" id="valueContent">
+                <div class="culture-grid">
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>增强免疫力</h3>
+                            <p>虫草富含虫草素、虫草酸、虫草多糖等多种活性成分，能显著增强人体免疫功能，提高抗病能力。</p>
+                            <p>虫草多糖能激活巨噬细胞，增强自然杀伤细胞活性，调节体液免疫和细胞免疫。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-lungs"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>润肺平喘</h3>
+                            <p>传统中医认为虫草具有补肺益肾、止咳平喘的功效，对慢性支气管炎、哮喘等呼吸道疾病有良好效果。</p>
+                            <p>现代研究表明，虫草能扩张支气管，改善肺功能，减轻炎症反应。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>保护心脑血管</h3>
+                            <p>虫草能降低血液中的胆固醇和甘油三酯，预防动脉粥样硬化，保护心脑血管健康。</p>
+                            <p>虫草中的腺苷能扩张冠状动脉，增加心肌供血，改善心功能。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 鉴别方法内容 -->
+            <div class="culture-content" id="identificationContent">
+                <div class="culture-grid">
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>外观鉴别</h3>
+                            <p>正品虫草：虫体饱满，色泽黄亮，环纹清晰，有8对足（中间4对明显），断面呈白色或黄白色。</p>
+                            <p>劣质虫草：虫体干瘪，颜色发黑，环纹模糊，足部不明显，断面颜色异常。</p>
+                            <p>云草链平台所有产品均有溯源码，扫码即可验证真伪，确保购买正品。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-weight"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>重量鉴别</h3>
+                            <p>优质虫草：单根重量适中，手感坚实有弹性，不轻飘。</p>
+                            <p>掺杂虫草：重量异常轻，可能被提取过有效成分或掺杂其他物质。</p>
+                            <p>特级虫草每克约2-3根，一级虫草每克约3-4根，可作为参考标准。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>科学鉴别</h3>
+                            <p>实验室检测：通过显微镜观察菌丝形态，检测虫草素、虫草酸含量。</p>
+                            <p>DNA检测：通过分子生物学方法鉴定虫草真伪，确保品种纯正。</p>
+                            <p>云草链合作企业均提供第三方检测报告，品质有保障。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 食用方法内容 -->
+            <div class="culture-content" id="usageContent">
+                <div class="culture-grid">
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>炖汤食用</h3>
+                            <p>推荐搭配：虫草3-5根，鸡肉或鸭肉500克，枸杞10克，红枣5枚。</p>
+                            <p>做法：将所有材料放入炖盅，加适量水，文火炖煮2-3小时，调味后食用。</p>
+                            <p>功效：补气养血，增强免疫力，适合体质虚弱者。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-mug-hot"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>泡水饮用</h3>
+                            <p>方法：取虫草2-3根，用温水冲洗后放入杯中，加入80℃左右热水，浸泡10-15分钟后饮用。</p>
+                            <p>可反复冲泡3-4次，最后将虫草嚼食。</p>
+                            <p>适合办公室人群，简单方便，每日饮用有益健康。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-capsules"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>研粉服用</h3>
+                            <p>方法：将虫草研成细粉，每日取1-2克，温水送服或加入牛奶、蜂蜜中服用。</p>
+                            <p>优点：吸收更充分，利用率高，适合需要精准剂量的人群。</p>
+                            <p>云草链平台提供优质虫草粉产品，采用超微粉碎技术，更易吸收。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 保存技巧内容 -->
+            <div class="culture-content" id="preservationContent">
+                <div class="culture-grid">
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-snowflake"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>低温干燥保存</h3>
+                            <p>最佳保存温度：2-8℃，湿度低于60%。</p>
+                            <p>方法：将虫草放入密封袋或密封罐中，置于冰箱冷藏室。</p>
+                            <p>避免与有异味的食物一同存放，防止串味。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>防潮防虫</h3>
+                            <p>可在保存容器中放入干燥剂（如硅胶干燥剂）吸收水分。</p>
+                            <p>定期检查虫草状态，如发现受潮应立即晾晒或烘干。</p>
+                            <p>避免阳光直射，防止虫草褪色和有效成分流失。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="culture-card">
+                        <div class="culture-img">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="culture-info">
+                            <h3>保质期建议</h3>
+                            <p>未开封虫草：在适宜条件下可保存2-3年。</p>
+                            <p>已开封虫草：建议在6个月内使用完毕。</p>
+                            <p>虫草粉：开封后建议3个月内用完，防止氧化变质。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们模块 -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-header">
+                <h2>关于云草链平台</h2>
+                <p>连接云南虫草产业链的每一个环节，推动产业标准化、透明化发展，助力乡村振兴</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-tabs">
+                    <button class="about-tab active" data-about="mission">平台使命</button>
+                    <button class="about-tab" data-about="team">核心团队</button>
+                    <button class="about-tab" data-about="development">发展历程</button>
+                    <button class="about-tab" data-about="contact">联系我们</button>
+                </div>
+                
+                <!-- 平台使命内容 -->
+                <div class="about-panel active" id="missionPanel">
+                    <h3 style="margin-bottom: 20px; color: var(--dark-color);">我们的使命与愿景</h3>
+                    <p style="color: #555; line-height: 1.8; margin-bottom: 30px;">
+                        云草链平台致力于成为连接云南虫草产业上中下游的智慧桥梁，通过数字化技术推动产业转型升级，实现从产地到消费者的全链透明化、标准化管理。我们相信，只有建立信任、保障品质、打通渠道，才能真正实现虫草产业的可持续发展，助力云南乡村振兴。
+                    </p>
+                    
+                    <div class="mission-values">
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>品质保障</h4>
+                            <p>建立全链溯源系统，确保每一件虫草产品都可追溯、可验证</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <h4>产业赋能</h4>
+                            <p>为农户、合作社、加工企业提供标准化指导和技术支持</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <h4>公平交易</h4>
+                            <p>消除中间环节，让消费者享受产地直供价格，让农户获得合理收益</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px; padding: 30px; background-color: #f9f9f9; border-radius: var(--border-radius);">
+                        <h4 style="color: var(--primary-color); margin-bottom: 15px;">平台核心价值</h4>
+                        <ul style="color: #555; line-height: 1.8; padding-left: 20px;">
+                            <li>标准化赋能：制定从采挖到加工的全套标准化操作规范</li>
+                            <li>透明化管理：区块链技术确保溯源信息不可篡改</li>
+                            <li>文化传播：推广云南虫草文化和健康养生知识</li>
+                            <li>乡村振兴：带动云南虫草产区经济发展，提高农户收入</li>
+                            <li>生态保护：倡导可持续采挖，保护高原生态环境</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 核心团队内容 -->
+                <div class="about-panel" id="teamPanel">
+                    <h3 style="margin-bottom: 30px; color: var(--dark-color);">我们的核心团队</h3>
+                    
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h4>张XX</h4>
+                            <p style="color: var(--primary-color); font-weight: 600;">创始人兼CEO</p>
+                            <p style="color: #666; margin-top: 10px;">XX年中药材行业经验，XX农业大学特聘教授</p>
+                        </div>
+                        
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <h4>李XX</h4>
+                            <p style="color: var(--primary-color); font-weight: 600;">技术总监</p>
+                            <p style="color: #666; margin-top: 10px;">区块链技术专家，负责溯源系统开发</p>
+                        </div>
+                        
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h4>扎西</h4>
+                            <p style="color: var(--primary-color); font-weight: 600;">产地合作总监</p>
+                            <p style="color: #666; margin-top: 10px;">迪庆虫草合作社联合创始人，熟悉产区情况</p>
+                        </div>
+                        
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>王XX</h4>
+                            <p style="color: var(--primary-color); font-weight: 600;">市场总监</p>
+                            <p style="color: #666; margin-top: 10px;">XX年电商运营经验，擅长品牌推广</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px; padding: 25px; background-color: rgba(42, 110, 63, 0.05); border-radius: var(--border-radius);">
+                        <h4 style="color: var(--primary-color); margin-bottom: 15px;">团队理念</h4>
+                        <p style="color: #555; line-height: 1.8;">
+                            我们是一支由行业专家、技术人才、产地代表和市场精英组成的多元化团队。我们深爱云南这片土地，了解虫草产业每一个环节的痛点和需求。我们的使命是用科技赋能传统产业，用诚信连接产业链，用行动助力乡村振兴。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 发展历程内容 -->
+                <div class="about-panel" id="developmentPanel">
+                    <h3 style="margin-bottom: 30px; color: var(--dark-color);">平台发展历程</h3>
+                    
+                    <div style="position: relative; padding-left: 30px; margin-bottom: 40px;">
+                        <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background-color: var(--primary-color);"></div>
+                        
+                        <div style="position: relative; margin-bottom: 30px; padding-left: 20px;">
+                            <div style="position: absolute; left: -28px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background-color: var(--primary-color); border: 3px solid white; box-shadow: 0 0 0 3px var(--primary-color);"></div>
+                            <div style="font-weight: 600; color: var(--primary-color); margin-bottom: 5px;">202X年XX月</div>
+                            <div style="color: #555;">项目立项，团队组建，深入云南虫草产区调研</div>
+                        </div>
+                        
+                        <div style="position: relative; margin-bottom: 30px; padding-left: 20px;">
+                            <div style="position: absolute; left: -28px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background-color: var(--primary-color); border: 3px solid white; box-shadow: 0 0 0 3px var(--primary-color);"></div>
+                            <div style="font-weight: 600; color: var(--primary-color); margin-bottom: 5px;">202X年XX月</div>
+                            <div style="color: #555;">与迪庆、丽江等地20+合作社建立合作，覆盖农户500+户</div>
+                        </div>
+                        
+                        <div style="position: relative; margin-bottom: 30px; padding-left: 20px;">
+                            <div style="position: absolute; left: -28px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background-color: var(--primary-color); border: 3px solid white; box-shadow: 0 0 0 3px var(--primary-color);"></div>
+                            <div style="font-weight: 600; color: var(--primary-color); margin-bottom: 5px;">202X年XX月</div>
+                            <div style="color: #555;">区块链溯源系统V1.0上线，首批合作企业入驻平台</div>
+                        </div>
+                        
+                        <div style="position: relative; margin-bottom: 30px; padding-left: 20px;">
+                            <div style="position: absolute; left: -28px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background-color: var(--primary-color); border: 3px solid white; box-shadow: 0 0 0 3px var(--primary-color);"></div>
+                            <div style="font-weight: 600; color: var(--primary-color); margin-bottom: 5px;">202X年XX月</div>
+                            <div style="color: #555;">平台正式上线，月交易额突破XXX万元</div>
+                        </div>
+                        
+                        <div style="position: relative; padding-left: 20px;">
+                            <div style="position: absolute; left: -28px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background-color: var(--primary-color); border: 3px solid white; box-shadow: 0 0 0 3px var(--primary-color);"></div>
+                            <div style="font-weight: 600; color: var(--primary-color); margin-bottom: 5px;">未来展望</div>
+                            <div style="color: #555;">目标覆盖云南80%虫草产区，服务10XX+合作企业，年交易额突破XXXX万元，成为国内领先的虫草产业整合平台</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px;">
+                        <div style="text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: var(--border-radius);">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--primary-color);">50+</div>
+                            <div style="color: #666; margin-top: 10px;">合作企业</div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: var(--border-radius);">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--primary-color);">800+</div>
+                            <div style="color: #666; margin-top: 10px;">合作农户</div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: var(--border-radius);">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--primary-color);">5000+</div>
+                            <div style="color: #666; margin-top: 10px;">注册用户</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 联系我们内容 -->
+                <div class="about-panel" id="contactPanel">
+                    <h3 style="margin-bottom: 30px; color: var(--dark-color);">联系我们</h3>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 5px;">办公地址</h4>
+                                <p style="color: #555;">云南省昆明市呈贡区云上小镇数字经济产业园X栋XX层</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 5px;">联系电话</h4>
+                                <p style="color: #555;">400-888-8888（客服热线）<br>0871-6832-8888（商务合作）</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 5px;">电子邮箱</h4>
+                                <p style="color: #555;">contact@yuncaochain.com（客服）<br>business@yuncaochain.com（商务）</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 5px;">工作时间</h4>
+                                <p style="color: #555;">周一至周五 9:00-18:00<br>周六 9:00-12:00（客服值班）</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px;">
+                        <h4 style="margin-bottom: 15px; color: var(--dark-color);">合作意向</h4>
+                        <p style="color: #555; line-height: 1.8; margin-bottom: 20px;">
+                            如果您是虫草产区合作社、加工企业、销售渠道或相关机构，欢迎与我们联系，共同推动云南虫草产业发展。
+                        </p>
+                        <button class="btn btn-primary" id="cooperationBtn" style="padding: 12px 30px;">
+                            <i class="fas fa-handshake"></i> 提交合作意向
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>云草链平台</h3>
+                    <p style="color: #ccc; margin-bottom: 20px;">连接云南虫草产业上中下游的智慧桥梁，推动产业标准化、透明化发展。</p>
+                    <div style="display: flex; gap: 15px; font-size: 20px;">
+                        <a href="#" style="color: #ccc;"><i class="fab fa-weixin"></i></a>
+                        <a href="#" style="color: #ccc;"><i class="fab fa-weibo"></i></a>
+                        <a href="#" style="color: #ccc;"><i class="fab fa-zhihu"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="#products">产品中心</a></li>
+                        <li><a href="#traceability">溯源查询</a></li>
+                        <li><a href="#culture">虫草文化</a></li>
+                        <li><a href="#cooperation">合作加盟</a></li>
+                        <li><a href="#about">关于我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>合作伙伴</h3>
+                    <ul>
+                        <li><a href="#">云百草</a></li>
+                        <li><a href="#">西草药业</a></li>
+                        <li><a href="#">植秀堂</a></li>
+                        <li><a href="#">滇草坊</a></li>
+                        <li><a href="#">加入合作</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> 云南省昆明市呈贡区</li>
+                        <li><i class="fas fa-phone" style="margin-right: 8px;"></i> 400-888-8888</li>
+                        <li><i class="fas fa-envelope" style="margin-right: 8px;"></i> contact@yuncaochain.com</li>
+                        <li><i class="fas fa-clock" style="margin-right: 8px;"></i> 周一至周五 9:00-18:00</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2023 云草链 - 云南虫草产业整合平台. 版权所有 | 致力于云南虫草产业振兴与乡村振兴</p>
+                <p style="margin-top: 10px;">平台宗旨：贯通产业链 · 标准化赋能 · 文化传播 · 乡村振兴</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 在线咨询模块 -->
+    <div class="consultation-widget">
+        <div class="consult-btn" id="consultBtn">
+            <i class="fas fa-comments"></i>
+        </div>
+        
+        <div class="consult-modal" id="consultModal">
+            <div class="modal-header">
+                <h3 style="margin: 0; color: white;">在线咨询</h3>
+                <button class="close-detail" id="closeConsultModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="consult-option" id="consultProduct">
+                    <div class="option-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0 0 5px 0;">产品咨询</h4>
+                        <p style="margin: 0; color: #666; font-size: 14px;">了解虫草产品信息、价格、购买方式</p>
+                    </div>
+                </div>
+                
+                <div class="consult-option" id="consultTrace">
+                    <div class="option-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0 0 5px 0;">溯源咨询</h4>
+                        <p style="margin: 0; color: #666; font-size: 14px;">查询产品溯源信息，验证真伪</p>
+                    </div>
+                </div>
+                
+                <div class="consult-option" id="consultCooperation">
+                    <div class="option-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0 0 5px 0;">合作咨询</h4>
+                        <p style="margin: 0; color: #666; font-size: 14px;">企业入驻、合作社合作、渠道加盟</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 登录注册功能
+        const authModal = document.getElementById('authModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const closeAuthModal = document.getElementById('closeAuthModal');
+        const loginTabBtn = document.getElementById('loginTabBtn');
+        const registerTabBtn = document.getElementById('registerTabBtn');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+        
+        // 打开登录模态框
+        loginBtn.addEventListener('click', function() {
+            authModal.style.display = 'flex';
+            loginTabBtn.click();
+        });
+        
+        // 打开注册模态框
+        registerBtn.addEventListener('click', function() {
+            authModal.style.display = 'flex';
+            registerTabBtn.click();
+        });
+        
+        // 关闭登录注册模态框
+        closeAuthModal.addEventListener('click', function() {
+            authModal.style.display = 'none';
+        });
+        
+        // 点击外部关闭模态框
+        window.addEventListener('click', function(event) {
+            if (event.target === authModal) {
+                authModal.style.display = 'none';
+            }
+        });
+        
+        // 登录注册标签切换
+        loginTabBtn.addEventListener('click', function() {
+            loginTabBtn.classList.add('active');
+            registerTabBtn.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+        });
+        
+        registerTabBtn.addEventListener('click', function() {
+            registerTabBtn.classList.add('active');
+            loginTabBtn.classList.remove('active');
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+        });
+        
+        // 表单内切换链接
+        switchToRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            registerTabBtn.click();
+        });
+        
+        switchToLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginTabBtn.click();
+        });
+        
+        // 登录表单提交
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // 模拟登录过程
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
+            submitBtn.disabled = true;
+            
+            // 模拟API请求延迟
+            setTimeout(() => {
+                // 这里应该是实际的登录验证逻辑
+                // 模拟登录成功
+                alert(`登录成功！欢迎使用云草链平台。\n邮箱: ${email}`);
+                
+                // 更新导航栏
+                loginBtn.innerHTML = '<i class="fas fa-user-check"></i> 已登录';
+                loginBtn.classList.remove('btn-outline');
+                loginBtn.classList.add('btn-primary');
+                loginBtn.disabled = true;
+                
+                registerBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> 退出';
+                registerBtn.onclick = function() {
+                    if (confirm('确定要退出登录吗？')) {
+                        // 重置登录状态
+                        loginBtn.innerHTML = '<i class="fas fa-user"></i> 登录';
+                        loginBtn.classList.remove('btn-primary');
+                        loginBtn.classList.add('btn-outline');
+                        loginBtn.disabled = false;
+                        
+                        registerBtn.innerHTML = '<i class="fas fa-handshake"></i> 加入平台';
+                        registerBtn.onclick = function() {
+                            authModal.style.display = 'flex';
+                            registerTabBtn.click();
+                        };
+                        
+                        alert('已成功退出登录');
+                    }
+                };
+                
+                // 关闭模态框
+                authModal.style.display = 'none';
+                
+                // 重置表单
+                loginForm.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        });
+        
+        // 注册表单提交
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const userType = document.getElementById('registerUserType').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            // 验证密码是否一致
+            if (password !== confirmPassword) {
+                alert('两次输入的密码不一致，请重新输入');
+                return;
+            }
+            
+            // 模拟注册过程
+            const submitBtn = registerForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 注册中...';
+            submitBtn.disabled = true;
+            
+            // 模拟API请求延迟
+            setTimeout(() => {
+                // 这里应该是实际的注册逻辑
+                // 模拟注册成功
+                alert(`注册成功！\n姓名: ${name}\n邮箱: ${email}\n用户类型: ${getUserTypeText(userType)}\n\n欢迎加入云草链平台，请登录您的邮箱完成验证。`);
+                
+                // 切换到登录表单
+                loginTabBtn.click();
+                
+                // 填充登录表单
+                document.getElementById('loginEmail').value = email;
+                
+                // 重置注册表单
+                registerForm.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        });
+        
+        // 获取用户类型文本
+        function getUserTypeText(type) {
+            switch(type) {
+                case 'consumer': return '消费者/采购商';
+                case 'producer': return '生产者/供应商';
+                case 'enterprise': return '企业/合作社';
+                case 'researcher': return '研究人员';
+                default: return '未知类型';
+            }
+        }
+        
+        // 移动端菜单切换
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            const authButtons = document.querySelector('.auth-buttons');
+            
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+                authButtons.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                authButtons.style.display = 'flex';
+                
+                // 调整移动端菜单样式
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.width = '100%';
+                navLinks.style.backgroundColor = 'white';
+                navLinks.style.padding = '20px';
+                navLinks.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+                navLinks.style.gap = '15px';
+                
+                authButtons.style.position = 'absolute';
+                authButtons.style.top = 'calc(100% + 180px)';
+                authButtons.style.left = '0';
+                authButtons.style.width = '100%';
+                authButtons.style.justifyContent = 'center';
+                authButtons.style.padding = '20px';
+                authButtons.style.backgroundColor = 'white';
+                authButtons.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+            }
+        });
+        
+        // 产品溯源查询功能
+        document.getElementById('queryBtn').addEventListener('click', function() {
+            const traceCode = document.getElementById('traceCode').value.trim();
+            const resultDiv = document.getElementById('queryResult');
+            
+            if (!traceCode) {
+                alert('请输入溯源码进行查询');
+                return;
+            }
+            
+            // 模拟查询过程
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 查询中...';
+            this.disabled = true;
+            
+            // 模拟网络请求延迟
+            setTimeout(() => {
+                // 根据不同的溯源码显示不同的产品信息
+                let productData;
+                
+                if (traceCode.includes('DQ') || traceCode === 'YC20231015DQ001') {
+                    productData = {
+                        name: '云南迪庆特级冬虫夏草',
+                        code: traceCode || 'YC20231015DQ001',
+                        location: '云南省迪庆藏族自治州香格里拉市',
+                        harvestTime: '2023年10月15日',
+                        company: '云百草生物科技有限公司',
+                        processTime: '2023年10月20日',
+                        qualityCheck: '合格 (检测报告编号: QB20231020001)',
+                        logisticsInfo: '2023年10月25日发出，顺丰速运 SF123456789',
+                        grade: '特级',
+                        weight: '50g',
+                        storage: '干燥、阴凉、通风处',
+                        shelfLife: '24个月',
+                        batchNumber: 'DQ20231015A',
+                        inspector: '李质检员',
+                        testDate: '2023年10月19日'
+                    };
+                } else if (traceCode.includes('LJ') || traceCode === 'YC20231020LJ002') {
+                    productData = {
+                        name: '丽江一级虫草',
+                        code: traceCode || 'YC20231020LJ002',
+                        location: '云南省丽江市玉龙雪山保护区',
+                        harvestTime: '2023年10月20日',
+                        company: '西草药业有限公司',
+                        processTime: '2023年10月25日',
+                        qualityCheck: '合格 (检测报告编号: XC20231025001)',
+                        logisticsInfo: '2023年10月28日发出，中通快递 ZT789012345',
+                        grade: '一级',
+                        weight: '50g',
+                        storage: '干燥、阴凉、通风处',
+                        shelfLife: '24个月',
+                        batchNumber: 'LJ20231020B',
+                        inspector: '王质检员',
+                        testDate: '2023年10月24日'
+                    };
+                } else if (traceCode.includes('CC') || traceCode === 'YC20231025CC001') {
+                    productData = {
+                        name: '虫草养生酒',
+                        code: traceCode || 'YC20231025CC001',
+                        location: '云南省昆明市经济技术开发区',
+                        harvestTime: '2023年9月15日',
+                        company: '云百草生物科技有限公司',
+                        processTime: '2023年10月10日',
+                        qualityCheck: '合格 (检测报告编号: JZ20231010001)',
+                        logisticsInfo: '2023年10月30日发出，京东物流 JD123456789',
+                        grade: '精品',
+                        weight: '500ml',
+                        storage: '阴凉、避光处',
+                        shelfLife: '36个月',
+                        batchNumber: 'JZ20231010C',
+                        inspector: '张质检员',
+                        testDate: '2023年10月15日'
+                    };
+                } else {
+                    productData = {
+                        name: '云南虫草产品',
+                        code: traceCode,
+                        location: '云南省怒江傈僳族自治州',
+                        harvestTime: '2023年10月',
+                        company: '植秀堂药业有限公司',
+                        processTime: '2023年10月',
+                        qualityCheck: '合格 (检测报告编号: ZX202310001)',
+                        logisticsInfo: '2023年11月发出，圆通速递 YT123456789',
+                        grade: '标准',
+                        weight: '50g',
+                        storage: '干燥、阴凉处',
+                        shelfLife: '24个月',
+                        batchNumber: 'NJ202310D',
+                        inspector: '赵质检员',
+                        testDate: '2023年10月'
+                    };
+                }
+                
+                // 更新查询结果
+                document.getElementById('productName').textContent = productData.name;
+                document.getElementById('productCode').textContent = productData.code;
+                document.getElementById('harvestLocation').textContent = productData.location;
+                document.getElementById('harvestTime').textContent = productData.harvestTime;
+                document.getElementById('processCompany').textContent = productData.company;
+                document.getElementById('processTime').textContent = productData.processTime;
+                document.getElementById('qualityCheck').textContent = productData.qualityCheck;
+                document.getElementById('logisticsInfo').textContent = productData.logisticsInfo;
+                
+                // 添加详细溯源信息
+                let traceDetailHTML = `
+                    <div class="trace-result-detail">
+                        <h4 style="color: var(--primary-color); margin-bottom: 20px;">
+                            <i class="fas fa-history"></i> 全链溯源时间线
+                        </h4>
+                        <div class="trace-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-time">${productData.harvestTime}</div>
+                                <div class="timeline-content">
+                                    <strong>高原采挖</strong> - 在${productData.location}完成采挖作业，采挖人员：扎西合作社
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-time">${productData.processTime}</div>
+                                <div class="timeline-content">
+                                    <strong>标准化加工</strong> - ${productData.company}进行清洗、筛选、干燥等标准化加工
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-time">${productData.testDate}</div>
+                                <div class="timeline-content">
+                                    <strong>质量检测</strong> - 通过${productData.inspector}的严格检测，${productData.qualityCheck.split('(')[0]}
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-time">${productData.logisticsInfo.split('，')[0]}</div>
+                                <div class="timeline-content">
+                                    <strong>包装发货</strong> - ${productData.logisticsInfo.split('，')[1]}，开始运输至消费者
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="trace-quality-report">
+                            <h5 style="color: var(--dark-color); margin-bottom: 15px;">
+                                <i class="fas fa-clipboard-check"></i> 质量检测报告
+                            </h5>
+                            <div class="quality-item">
+                                <span>产品等级：</span>
+                                <span>${productData.grade}</span>
+                            </div>
+                            <div class="quality-item">
+                                <span>规格重量：</span>
+                                <span>${productData.weight}</span>
+                            </div>
+                            <div class="quality-item">
+                                <span>生产批号：</span>
+                                <span>${productData.batchNumber}</span>
+                            </div>
+                            <div class="quality-item">
+                                <span>储存条件：</span>
+                                <span>${productData.storage}</span>
+                            </div>
+                            <div class="quality-item">
+                                <span>保质期限：</span>
+                                <span>${productData.shelfLife}</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background-color: rgba(42, 110, 63, 0.05); border-radius: var(--border-radius);">
+                            <p style="color: var(--primary-color); font-size: 14px; margin: 0;">
+                                <i class="fas fa-shield-alt"></i> 
+                                本溯源信息基于区块链技术存储，所有节点共同验证，确保信息不可篡改、真实可靠。
+                            </p>
+                        </div>
+                    </div>
+                `;
+                
+                // 如果已经有详细溯源信息，先移除
+                const existingDetail = resultDiv.querySelector('.trace-result-detail');
+                if (existingDetail) {
+                    existingDetail.remove();
+                }
+                
+                // 添加新的详细溯源信息
+                resultDiv.insertAdjacentHTML('beforeend', traceDetailHTML);
+                
+                // 显示结果
+                resultDiv.style.display = 'block';
+                
+                // 恢复按钮状态
+                this.innerHTML = '<i class="fas fa-search"></i> 查询溯源信息';
+                this.disabled = false;
+                
+                // 滚动到结果区域
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // 添加历史查询记录（模拟）
+                addToTraceHistory(productData);
+                
+            }, 1500);
+        });
+        
+        // 添加历史查询记录功能
+        function addToTraceHistory(productData) {
+            // 获取或创建历史记录容器
+            let historyContainer = document.getElementById('traceHistory');
+            if (!historyContainer) {
+                historyContainer = document.createElement('div');
+                historyContainer.id = 'traceHistory';
+                historyContainer.style.marginTop = '30px';
+                historyContainer.style.padding = '20px';
+                historyContainer.style.backgroundColor = '#f9f9f9';
+                historyContainer.style.borderRadius = 'var(--border-radius)';
+                historyContainer.innerHTML = '<h4 style="color: var(--dark-color); margin-bottom: 15px;">最近查询记录</h4><div id="historyList"></div>';
+                
+                // 将历史记录容器插入到查询结果后面
+                const queryContainer = document.querySelector('.query-container');
+                if (queryContainer) {
+                    queryContainer.appendChild(historyContainer);
+                }
+            }
+            
+            // 添加新的历史记录
+            const historyList = document.getElementById('historyList');
+            const historyItem = document.createElement('div');
+            historyItem.style.padding = '10px';
+            historyItem.style.marginBottom = '10px';
+            historyItem.style.backgroundColor = 'white';
+            historyItem.style.borderRadius = 'var(--border-radius)';
+            historyItem.style.borderLeft = `4px solid ${getStatusColor(productData.qualityCheck)}`;
+            
+            const now = new Date();
+            const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            historyItem.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>${productData.name}</strong>
+                        <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                            溯源码: ${productData.code} | 查询时间: ${timeString}
+                        </div>
+                    </div>
+                    <span style="font-size: 12px; color: #666;">${productData.qualityCheck.split('(')[0]}</span>
+                </div>
+            `;
+            
+            // 将新记录添加到最前面
+            if (historyList.firstChild) {
+                historyList.insertBefore(historyItem, historyList.firstChild);
+            } else {
+                historyList.appendChild(historyItem);
+            }
+            
+            // 限制历史记录数量
+            const maxHistoryItems = 5;
+            while (historyList.children.length > maxHistoryItems) {
+                historyList.removeChild(historyList.lastChild);
+            }
+        }
+        
+        function getStatusColor(qualityCheck) {
+            if (qualityCheck.includes('合格')) {
+                return '#2a6e3f'; // 绿色
+            } else if (qualityCheck.includes('待检')) {
+                return '#d4af37'; // 金色
+            } else {
+                return '#dc3545'; // 红色
+            }
+        }
+        
+        // 示例溯源码快速填充功能
+        function setupExampleCodes() {
+            const traceInput = document.getElementById('traceCode');
+            const exampleContainer = document.createElement('div');
+            exampleContainer.style.marginTop = '15px';
+            exampleContainer.style.fontSize = '14px';
+            exampleContainer.innerHTML = `
+                <div style="color: #666; margin-bottom: 8px;">示例溯源码（点击试用）：</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <span class="example-code" style="padding: 5px 10px; background-color: #f0f9f0; border-radius: 4px; cursor: pointer; color: var(--primary-color);">YC20231015DQ001</span>
+                    <span class="example-code" style="padding: 5px 10px; background-color: #f0f9f0; border-radius: 4px; cursor: pointer; color: var(--primary-color);">YC20231020LJ002</span>
+                    <span class="example-code" style="padding: 5px 10px; background-color: #f0f9f0; border-radius: 4px; cursor: pointer; color: var(--primary-color);">YC20231025CC001</span>
+                </div>
+            `;
+            
+            // 将示例代码容器插入到输入框后面
+            traceInput.parentNode.insertBefore(exampleContainer, traceInput.nextSibling);
+            
+            // 为示例代码添加点击事件
+            document.querySelectorAll('.example-code').forEach(example => {
+                example.addEventListener('click', function() {
+                    traceInput.value = this.textContent;
+                    traceInput.focus();
+                });
+            });
+        }
+        
+        // 页面加载完成后设置示例溯源码
+        document.addEventListener('DOMContentLoaded', function() {
+            setupExampleCodes();
+        });
+        
+        // 溯源码输入框回车键查询
+        document.getElementById('traceCode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('queryBtn').click();
+            }
+        });
+        
+        // 立即溯源查询按钮功能
+        document.getElementById('startTraceBtn').addEventListener('click', function() {
+            document.getElementById('traceability').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('traceCode').focus();
+        });
+        
+        // 观看平台介绍按钮
+        document.getElementById('watchIntroBtn').addEventListener('click', function() {
+            alert('平台介绍视频即将播放...\n\n这是一个模拟功能，实际项目中可以嵌入宣传视频。');
+        });
+        
+        // 产品详情功能
+        const productDetailModal = document.getElementById('productDetailModal');
+        const closeProductDetail = document.getElementById('closeProductDetail');
+        const viewProductDetailBtns = document.querySelectorAll('.view-product-detail');
+        
+        // 产品数据
+        const products = {
+            1: {
+                name: '迪庆特级冬虫夏草',
+                price: '¥ 12,800 / 50g',
+                grade: '特级',
+                origin: '云南迪庆香格里拉',
+                harvestTime: '2023年10月',
+                company: '云百草生物科技有限公司',
+                traceCode: 'YC20231015DQ001',
+                stock: '充足',
+                description: '产自云南迪庆香格里拉高原地区，海拔3500米以上，纯天然环境生长。虫体饱满完整，色泽金黄，草枝粗壮，有效成分含量高。采用传统采挖方法结合现代加工技术，确保品质纯正。'
+            },
+            2: {
+                name: '丽江一级虫草',
+                price: '¥ 8,600 / 50g',
+                grade: '一级',
+                origin: '云南丽江玉龙雪山',
+                harvestTime: '2023年10月',
+                company: '西草药业有限公司',
+                traceCode: 'YC20231020LJ002',
+                stock: '充足',
+                description: '产自丽江玉龙雪山保护区，海拔3200米，自然环境优越。虫体完整，色泽自然，品质优良，性价比高。适合日常养生保健使用。'
+            },
+            3: {
+                name: '虫草养生酒',
+                price: '¥ 680 / 瓶',
+                grade: '精品',
+                origin: '云南昆明',
+                harvestTime: '2023年9月',
+                company: '云百草生物科技有限公司',
+                traceCode: 'YC20231025CC001',
+                stock: '充足',
+                description: '采用优质冬虫夏草与纯粮白酒浸泡而成，浸泡时间长达180天，有效成分充分溶出。酒体清澈，口感醇厚，具有滋补养生功效。'
+            },
+            4: {
+                name: '虫草精华粉',
+                price: '¥ 1,280 / 盒',
+                grade: '特制',
+                origin: '云南昆明',
+                harvestTime: '2023年10月',
+                company: '植秀堂药业有限公司',
+                traceCode: 'YC20231028FM001',
+                stock: '充足',
+                description: '采用超微粉碎技术，将优质虫草粉碎至300目以上，更易人体吸收。每盒30袋独立包装，方便携带和冲泡，适合现代快节奏生活。'
+            }
+        };
+        
+        // 打开产品详情
+        viewProductDetailBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product-id');
+                const product = products[productId];
+                
+                if (product) {
+                    // 填充产品详情数据
+                    document.getElementById('productDetailName').textContent = product.name;
+                    document.getElementById('productDetailPrice').textContent = product.price;
+                    document.getElementById('productGrade').textContent = product.grade;
+                    document.getElementById('productOrigin').textContent = product.origin;
+                    document.getElementById('productHarvestTime').textContent = product.harvestTime;
+                    document.getElementById('productCompany').textContent = product.company;
+                    document.getElementById('productTraceCode').textContent = product.traceCode;
+                    document.getElementById('productStock').textContent = product.stock;
+                    document.getElementById('productDescription').textContent = product.description;
+                    
+                    // 打开详情模态框
+                    productDetailModal.style.display = 'flex';
+                }
+            });
+        });
+        
+        // 关闭产品详情
+        closeProductDetail.addEventListener('click', function() {
+            productDetailModal.style.display = 'none';
+        });
+        
+        // 点击外部关闭产品详情模态框
+        window.addEventListener('click', function(event) {
+            if (event.target === productDetailModal) {
+                productDetailModal.style.display = 'none';
+            }
+        });
+        
+        // 产品图片缩略图切换
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.getElementById('productMainImage');
+        
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                // 移除所有active类
+                thumbnails.forEach(t => t.classList.remove('active'));
+                // 添加active类到当前缩略图
+                this.classList.add('active');
+                
+                // 更改主图片
+                const imageType = this.getAttribute('data-image');
+                const iconClass = getIconClassForImage(imageType);
+                mainImage.innerHTML = `<i class="${iconClass}"></i>`;
+            });
+        });
+        
+        function getIconClassForImage(type) {
+            switch(type) {
+                case 'capsules': return 'fas fa-capsules';
+                case 'mountain': return 'fas fa-mountain';
+                case 'leaf': return 'fas fa-leaf';
+                case 'vial': return 'fas fa-vial';
+                default: return 'fas fa-capsules';
+            }
+        }
+        
+        // 企业详情功能
+        const companyDetailModal = document.getElementById('companyDetailModal');
+        const closeCompanyDetail = document.getElementById('closeCompanyDetail');
+        const viewCompanyDetailBtns = document.querySelectorAll('.view-company-detail');
+        
+        // 企业数据
+        const companies = {
+            1: {
+                name: '云百草生物科技有限公司',
+                logo: '云百草',
+                logoColor: '#e8f5e9',
+                tags: ['加工企业', 'GMP认证', '高新技术企业'],
+                description: '云百草生物科技有限公司成立于2010年，是云南省重点扶持的虫草精深加工企业。公司拥有现代化生产车间和研发中心，专注于冬虫夏草等云南特色药材的研发、生产和销售。公司通过GMP认证，产品质量管理体系完善，与迪庆、怒江等地多个合作社建立长期合作关系，年加工虫草能力达5吨。',
+                year: '13年',
+                employees: '150+',
+                capacity: '5吨',
+                farmers: '200+户',
+                products: '冬虫夏草、虫草粉、虫草酒',
+                certifications: 'GMP、ISO9001、有机认证',
+                joinDate: '2022年5月'
+            },
+            2: {
+                name: '滇草坊健康连锁',
+                logo: '滇草坊',
+                logoColor: '#f3e5f5',
+                tags: ['销售渠道', '连锁药店', '消费者信赖'],
+                description: '滇草坊健康连锁成立于2008年，是云南省内知名的中药材零售连锁品牌。目前在全省拥有50多家门店，专注于高品质中药材、保健品销售。公司建立了严格的供应商筛选体系，确保所售产品质量可靠。自加入云草链平台以来，销售额同比增长35%，消费者满意度大幅提升。',
+                year: '15年',
+                employees: '200+',
+                capacity: '不适用',
+                farmers: '不适用',
+                products: '各类中药材、保健品',
+                certifications: '药品经营许可证、诚信企业',
+                joinDate: '2022年8月'
+            },
+            3: {
+                name: '香格里拉虫草合作社',
+                logo: '香格里拉合作社',
+                logoColor: '#e3f2fd',
+                tags: ['产地合作社', '迪庆产区', '标准化生产'],
+                description: '香格里拉虫草合作社成立于2015年，联合迪庆地区200多户虫草采挖农户，实行统一采挖标准、统一初加工、统一销售。合作社建立了完整的虫草采挖培训体系，确保采挖过程不破坏生态环境，同时保障虫草品质。通过云草链平台，合作社虫草销售价格平均提升20%，农户收入显著增加。',
+                year: '8年',
+                employees: '不适用',
+                capacity: '不适用',
+                farmers: '200+户',
+                products: '冬虫夏草原材料',
+                certifications: '有机认证、地理标志产品',
+                joinDate: '2022年3月'
+            },
+            4: {
+                name: '植秀堂药业有限公司',
+                logo: '植秀堂',
+                logoColor: '#fff3e0',
+                tags: ['加工企业', '文创产品', '中医药结合'],
+                description: '植秀堂药业有限公司成立于2012年，专注于将传统中医药与现代科技结合，开发系列养生保健产品。公司拥有虫草精深加工生产线，并开发了虫草养生酒、虫草精华粉、虫草面膜等多种衍生产品。公司注重产品创新和文化传播，多次获得省级创新奖项。',
+                year: '11年',
+                employees: '80+',
+                capacity: '2吨',
+                farmers: '100+户',
+                products: '虫草制品、养生保健品',
+                certifications: 'GMP、ISO22000',
+                joinDate: '2023年1月'
+            }
+        };
+        
+       
+        viewCompanyDetailBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const companyId = this.getAttribute('data-company-id');
+                const company = companies[companyId];
+                
+                if (company) {
+                    
+                    document.getElementById('companyDetailName').textContent = company.name;
+                    document.getElementById('companyDetailLogo').textContent = company.logo;
+                    document.getElementById('companyDetailLogo').style.backgroundColor = company.logoColor;
+                    
+                  
+                    const tagsContainer = document.getElementById('companyDetailTags');
+                    tagsContainer.innerHTML = '';
+                    company.tags.forEach(tag => {
+                        const tagElement = document.createElement('span');
+                        tagElement.className = 'company-tag-large';
+                        tagElement.textContent = tag;
+                        tagsContainer.appendChild(tagElement);
+                    });
+                    
+                    document.getElementById('companyDetailDescription').textContent = company.description;
+                    document.getElementById('companyYear').textContent = company.year;
+                    document.getElementById('companyEmployees').textContent = company.employees;
+                    document.getElementById('companyCapacity').textContent = company.capacity;
+                    document.getElementById('companyFarmers').textContent = company.farmers;
+                    document.getElementById('companyProducts').textContent = company.products;
+                    document.getElementById('companyCertifications').textContent = company.certifications;
+                    document.getElementById('companyJoinDate').textContent = company.joinDate;
+                    
+                    
+                    companyDetailModal.style.display = 'flex';
+                }
+            });
+        });
+        
+        
+        closeCompanyDetail.addEventListener('click', function() {
+            companyDetailModal.style.display = 'none';
+        });
+        
+       
+        window.addEventListener('click', function(event) {
+            if (event.target === companyDetailModal) {
+                companyDetailModal.style.display = 'none';
+            }
+        });
+        
+        
+        document.getElementById('addToCartBtn').addEventListener('click', function() {
+            const productName = document.getElementById('productDetailName').textContent;
+            alert(`"${productName}" 已添加到采购车！`);
+        });
+        
+        document.getElementById('contactSupplierBtn').addEventListener('click', function() {
+            alert('正在为您连接供应商...\n\n此功能需要您先登录平台。');
+        });
+        
+        
+        document.getElementById('contactCompanyBtn').addEventListener('click', function() {
+            const companyName = document.getElementById('companyDetailName').textContent;
+            alert(`正在为您连接 "${companyName}"...\n\n企业联系人将尽快与您联系。`);
+        });
+        
+        document.getElementById('viewProductsBtn').addEventListener('click', function() {
+            const companyName = document.getElementById('companyDetailName').textContent;
+            alert(`正在为您加载 "${companyName}" 的产品列表...\n\n页面将跳转到该企业的产品展示页。`);
+        });
+        
+      
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const productCards = document.querySelectorAll('.product-card');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                
+                tabBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.getAttribute('data-category');
+                
+               
+                productCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+      
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const companyCards = document.querySelectorAll('.company-card');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                
+                // 筛选企业
+                companyCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-type') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // 虫草文化标签切换功能
+        const cultureTabs = document.querySelectorAll('.culture-tab');
+        const cultureContents = document.querySelectorAll('.culture-content');
+        
+        cultureTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有active类
+                cultureTabs.forEach(t => t.classList.remove('active'));
+                cultureContents.forEach(c => c.classList.remove('active'));
+                
+                // 添加active类到当前标签
+                this.classList.add('active');
+                
+                // 显示对应的内容
+                const cultureType = this.getAttribute('data-culture');
+                const contentId = cultureType + 'Content';
+                document.getElementById(contentId).classList.add('active');
+            });
+        });
+        
+        // 关于我们标签切换功能
+        const aboutTabs = document.querySelectorAll('.about-tab');
+        const aboutPanels = document.querySelectorAll('.about-panel');
+        
+        aboutTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有active类
+                aboutTabs.forEach(t => t.classList.remove('active'));
+                aboutPanels.forEach(p => p.classList.remove('active'));
+                
+                // 添加active类到当前标签
+                this.classList.add('active');
+                
+                // 显示对应的面板
+                const aboutType = this.getAttribute('data-about');
+                const panelId = aboutType + 'Panel';
+                document.getElementById(panelId).classList.add('active');
+            });
+        });
+        
+        // 合作意向按钮
+        document.getElementById('cooperationBtn').addEventListener('click', function() {
+            alert('合作意向提交功能\n\n请将您的公司信息、合作意向发送至 business@yuncaochain.com，我们的商务团队将在3个工作日内与您联系。');
+        });
+        
+        // 在线咨询功能
+        const consultBtn = document.getElementById('consultBtn');
+        const consultModal = document.getElementById('consultModal');
+        const closeConsultModal = document.getElementById('closeConsultModal');
+        
+        // 打开咨询模态框
+        consultBtn.addEventListener('click', function() {
+            consultModal.style.display = 'block';
+        });
+        
+        // 关闭咨询模态框
+        closeConsultModal.addEventListener('click', function() {
+            consultModal.style.display = 'none';
+        });
+        
+        // 点击外部关闭咨询模态框
+        window.addEventListener('click', function(event) {
+            if (event.target === consultModal) {
+                consultModal.style.display = 'none';
+            }
+        });
+        
+        // 咨询选项点击事件
+        document.getElementById('consultProduct').addEventListener('click', function() {
+            consultModal.style.display = 'none';
+            alert('产品咨询\n\n请描述您要咨询的产品信息，我们的客服人员将尽快为您解答。');
+        });
+        
+        document.getElementById('consultTrace').addEventListener('click', function() {
+            consultModal.style.display = 'none';
+            alert('溯源咨询\n\n请提供产品溯源码，我们将为您查询详细的溯源信息。');
+        });
+        
+        document.getElementById('consultCooperation').addEventListener('click', function() {
+            consultModal.style.display = 'none';
+            alert('合作咨询\n\n请描述您的合作意向，我们的商务团队将尽快与您联系。');
+        });
+        
+        // 平滑滚动导航
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if(this.getAttribute('href') === '#') return;
+                
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    
+                    document.querySelectorAll('.nav-links a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                   
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+       
+        const partnerLogos = document.querySelectorAll('.partner-logo');
+        partnerLogos.forEach(logo => {
+            logo.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            logo.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+            
+        
+            logo.addEventListener('click', function() {
+                alert('查看' + this.textContent + '的详细信息');
+            });
+        });
+        
+      
+        const positionCards = document.querySelectorAll('.position-card');
+        positionCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // 虫草文化卡片悬停效果
+        const cultureCards = document.querySelectorAll('.culture-card');
+        cultureCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // 关于我们卡片悬停效果
+        const valueCards = document.querySelectorAll('.value-card');
+        valueCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // 团队卡片悬停效果
+        const teamMembers = document.querySelectorAll('.team-member');
+        teamMembers.forEach(member => {
+            member.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            member.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
